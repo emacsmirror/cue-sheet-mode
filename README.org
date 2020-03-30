@@ -1,0 +1,5 @@
+* cue-mode
+
+Support for .cue files in emacs.
+
+   =cue-mode=, ya' basic!
