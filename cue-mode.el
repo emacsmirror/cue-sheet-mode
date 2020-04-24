@@ -17,15 +17,25 @@
 
 ;;; Commentary:
 
-;; Add support for .cue files in emacs.
+;; Add support for .cue files in Emacs.
 
 ;;; Code:
 
-(defvar cue-keywords  '("CATALOG" "FILE" "INDEX" "ISRC" "PERFORMER" "TITLE") "Keywords")
-(defvar cue-constants '() "Constants")
-(defvar cue-events    '("COMMENT" "DATE" "DISCID" "GENRE" "REM") "Events")
-(defvar cue-functions '("TRACK" "AUDIO") "Functions")
-(defvar cue-types     '("BINARY" "MP3" "WAVE") "Types")
+(defvar cue-keywords '("CATALOG" "FILE" "INDEX" "ISRC" "PERFORMER" "TITLE")
+  "Keywords.")
+(defvar cue-constants '()
+  "Constants.")
+(defvar cue-events '("COMMENT" "DATE" "DISCID" "GENRE" "REM")
+  "Events.")
+(defvar cue-functions '("TRACK" "AUDIO")
+  "Functions.")
+(defvar cue-types '("BINARY" "MP3" "WAVE")
+  "Types.")
+(defvar cue-mode-imenu-generic-expression
+  '(("File"  "^FILE *\\(.*\\)" 1)
+    ("Track" "^ *TRACK *\\(.*\\)" 1))
+  "Imenu regexp."
+  )
 
 (defvar cue-font-lock-keywords
   `(
@@ -35,12 +45,16 @@
     (,(regexp-opt cue-events    'words) . font-lock-builtin-face)
     (,(regexp-opt cue-functions 'words) . font-lock-function-name-face)
     (,(regexp-opt cue-types     'words) . font-lock-type-face))
-  "CUE mode syntax coloring")
+  "CUE mode syntax coloring.")
 
 ;;;###autoload
 (define-derived-mode cue-mode conf-mode "CUE mode"
   "Major mode for editing CUE files"
-  (setq font-lock-defaults '((cue-font-lock-keywords))))
+
+  (setq-local
+   comment-start "REM "
+   font-lock-defaults '((cue-font-lock-keywords))
+   imenu-generic-expression cue-mode-imenu-generic-expression))
 
 (add-to-list 'auto-mode-alist '("\\.cue\\'" . cue-mode))
 
