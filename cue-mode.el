@@ -21,7 +21,7 @@
 
 ;;; Code:
 
-(defvar cue-keywords '("CATALOG" "FILE" "INDEX" "ISRC" "PERFORMER" "TITLE")
+(defvar cue-keywords '("CATALOG" "FILE" "FLAGS" "INDEX" "ISRC" "PERFORMER" "TITLE")
   "Keywords.")
 (defvar cue-constants '()
   "Constants.")
