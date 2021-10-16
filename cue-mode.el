@@ -1,4 +1,4 @@
-;;; cue-mode.el --- sample major mode for editing CUE files
+;;; cue-mode.el --- Major mode for editing CUE files
 
 ;; Copyright © 2017, by Peter Hoeg
 
@@ -7,6 +7,7 @@
 ;; Created: 2017
 ;; Keywords: languages
 ;; Homepage: https://hoeg.com
+;; Package-Requires: ((emacs "24.3"))
 
 ;; This file is not part of GNU Emacs.
 
