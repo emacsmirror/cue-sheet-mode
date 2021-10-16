@@ -32,11 +32,6 @@
   "Functions.")
 (defvar cue-types '("BINARY" "MP3" "WAVE")
   "Types.")
-(defvar cue-mode-imenu-generic-expression
-  '(("File"  "^FILE *\\(.*\\)" 1)
-    ("Track" "^ *TRACK *\\(.*\\)" 1))
-  "Imenu regexp."
-  )
 
 (defvar cue-font-lock-keywords
   `(
@@ -47,6 +42,10 @@
     (,(regexp-opt cue-functions 'words) . font-lock-function-name-face)
     (,(regexp-opt cue-types     'words) . font-lock-type-face))
   "CUE mode syntax coloring.")
+
+(defvar cue-mode-imenu-generic-expression
+'(("File"  "^FILE *\\(.*\\)" 1)
+  ("Track" "^\\(TRACK\\)[ \t\n]+\\([a-zA-Z0-9_.:]+\\)" 2)))
 
 ;;;###autoload
 (define-derived-mode cue-mode conf-mode "CUE mode"
