@@ -22,39 +22,24 @@
 
 ;;; Code:
 
-(defvar cue-keywords '("CATALOG" "COMPOSER" "FILE" "FLAGS" "INDEX" "ISRC" "PERFORMER" "TITLE")
-  "Keywords.")
-(defvar cue-constants '()
-  "Constants.")
-(defvar cue-events '("COMMENT" "DATE" "DISCID" "GENRE" "REM")
-  "Events.")
-(defvar cue-functions '("TRACK" "AUDIO")
-  "Functions.")
-(defvar cue-types '("BINARY" "MP3" "WAVE")
-  "Types.")
-
 (defvar cue-font-lock-keywords
-  `(
-    ;; NOTE: order matters, because once colored, that part won't change.
-    (,(regexp-opt cue-keywords  'words) . font-lock-keyword-face)
-    (,(regexp-opt cue-constants 'words) . font-lock-constant-face)
-    (,(regexp-opt cue-events    'words) . font-lock-builtin-face)
-    (,(regexp-opt cue-functions 'words) . font-lock-function-name-face)
-    (,(regexp-opt cue-types     'words) . font-lock-type-face))
+  `(;; NOTE: order matters, because once colored, that part won't change.
+    (,(regexp-opt '("CATALOG" "COMPOSER" "FILE" "FLAGS" "INDEX" "ISRC" "PERFORMER" "TITLE") 'words) . font-lock-keyword-face)
+    (,(regexp-opt '() 'words) . font-lock-constant-face)
+    (,(regexp-opt '("COMMENT" "DATE" "DISCID" "GENRE" "REM") 'words) . font-lock-builtin-face)
+    (,(regexp-opt '("TRACK" "AUDIO") 'words) . font-lock-function-name-face)
+    (,(regexp-opt '("BINARY" "MP3" "WAVE") 'words) . font-lock-type-face))
   "CUE mode syntax coloring.")
-
-(defvar cue-mode-imenu-generic-expression
-'(("File"  "^FILE *\\(.*\\)" 1)
-  ("Track" "^\\(TRACK\\)[ \t\n]+\\([a-zA-Z0-9_.:]+\\)" 2)))
 
 ;;;###autoload
 (define-derived-mode cue-mode conf-mode "CUE mode"
-  "Major mode for editing CUE files"
+  "Major mode for editing CUE files."
 
-  (setq-local
-   comment-start "REM "
-   font-lock-defaults '((cue-font-lock-keywords))
-   imenu-generic-expression cue-mode-imenu-generic-expression))
+  (setq-local comment-start "REM "
+              comment-end ""
+              font-lock-defaults '((cue-font-lock-keywords))
+              imenu-generic-expression '(("Track" "^\\(TRACK\\)[ \t\n]+\\([a-zA-Z0-9_.:]+\\)" 2)
+                                         ("File"  "^FILE *\\(.*\\)" 1))))
 
 (add-to-list 'auto-mode-alist '("\\.cue\\'" . cue-mode))
 
