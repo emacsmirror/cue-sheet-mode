@@ -41,6 +41,7 @@
               imenu-generic-expression '(("Track" "^\\(TRACK\\)[ \t\n]+\\([a-zA-Z0-9_.:]+\\)" 2)
                                          ("File"  "^FILE *\\(.*\\)" 1))))
 
+;;;###autoload
 (add-to-list 'auto-mode-alist '("\\.cue\\'" . cue-mode))
 
 ;; add the mode to the `features' list
