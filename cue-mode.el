@@ -38,8 +38,8 @@
   (setq-local comment-start "REM "
               comment-end ""
               font-lock-defaults '((cue-font-lock-keywords))
-              imenu-generic-expression '(("Track" "^\\(TRACK\\)[ \t\n]+\\([a-zA-Z0-9_.:]+\\)" 2)
-                                         ("File"  "^FILE *\\(.*\\)" 1))))
+              imenu-generic-expression `(("Track" ,(rx bol (zero-or-more space) "TRACK" (one-or-more space) (group (one-or-more digit)) space "AUDIO" eol) 1)
+                                         ("File"  ,(rx bol "FILE" (one-or-more space) ?" (group (one-or-more not-newline)) ?" space "WAVE" eol) 1 ))))
 
 ;;;###autoload
 (add-to-list 'auto-mode-alist '("\\.cue\\'" . cue-mode))
