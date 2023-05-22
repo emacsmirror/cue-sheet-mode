@@ -8,47 +8,37 @@
 ;; Keywords: languages
 ;; Homepage: https://hoeg.com
 ;; Package-Requires: ((emacs "24.3"))
-
+;; SPDX-License-Identifier: GPL-3.0-or-later
+;;
 ;; This file is not part of GNU Emacs.
-
-;;; License:
-
-;; You can redistribute this program and/or modify it under the terms of the GNU
-;; General Public License version 2.
 
 ;;; Commentary:
 
-;; Add support for .cue files in Emacs.
+;; Support for .cue files in Emacs. The font-locking is very much *not*
+;; consistent and needs to be cleaned up.
 
 ;;; Code:
 
-(defvar cue-font-lock-keywords
-  `(;; NOTE: order matters, because once colored, that part won't change.
-    (,(regexp-opt '("CATALOG" "COMPOSER" "FILE" "FLAGS" "INDEX" "ISRC" "PERFORMER" "TITLE") 'words) . font-lock-keyword-face)
-    (,(regexp-opt '() 'words) . font-lock-constant-face)
-    (,(regexp-opt '("COMMENT" "DATE" "DISCID" "GENRE" "REM") 'words) . font-lock-builtin-face)
-    (,(regexp-opt '("TRACK" "AUDIO") 'words) . font-lock-function-name-face)
-    (,(regexp-opt '("BINARY" "MP3" "WAVE") 'words) . font-lock-type-face))
-  "CUE mode syntax coloring.")
+(require 'rx)
 
 ;;;###autoload
 (define-derived-mode cue-mode conf-mode "CUE mode"
   "Major mode for editing CUE files."
 
-  (setq-local comment-start "REM "
+  (setq-local comment-start "REM"
               comment-end ""
-              font-lock-defaults '((cue-font-lock-keywords))
+              font-lock-defaults `(((,(rx (or "REM")) 'font-lock-comment-delimiter-face)
+                                    (,(rx (or "CATALOG" "COMPOSER" "FLAGS" "INDEX" "ISRC" "PERFORMER" "TITLE")) . 'font-lock-keyword-face)
+                                    (,(rx (or "COMMENT" "DATE" "DISCID" "GENRE")) . 'font-lock-builtin-face)
+                                    (,(rx (or "AUDIO")) . 'font-lock-function-name-face)
+                                    (,(rx (or "BINARY" "FILE" "MP3" "TRACK" "WAVE")) . 'font-lock-type-face)))
               imenu-generic-expression `(("Track" ,(rx bol (zero-or-more space) "TRACK" (one-or-more space) (group (one-or-more digit)) space "AUDIO" eol) 1)
-                                         ("File"  ,(rx bol "FILE" (one-or-more space) ?" (group (one-or-more not-newline)) ?" space "WAVE" eol) 1 ))))
+                                         ("File"  ,(rx bol "FILE" (one-or-more space) "\"" (group (one-or-more not-newline)) "\"" space "WAVE" eol) 1 ))))
 
 ;;;###autoload
 (add-to-list 'auto-mode-alist '("\\.cue\\'" . cue-mode))
 
 ;; add the mode to the `features' list
 (provide 'cue-mode)
-
-;; Local Variables:
-;; coding: utf-8
-;; End:
 
 ;;; cue-mode.el ends here
