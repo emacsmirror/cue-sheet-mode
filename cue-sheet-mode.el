@@ -1,4 +1,4 @@
-;;; cue-mode.el --- Major mode for editing CUE files
+;;; cue-sheet-mode.el --- Major mode for editing CUE files
 
 ;; Copyright © 2017, by Peter Hoeg
 
@@ -22,7 +22,7 @@
 (require 'rx)
 
 ;;;###autoload
-(define-derived-mode cue-mode conf-mode "CUE mode"
+(define-derived-mode cue-sheet-mode conf-mode "CUE mode"
   "Major mode for editing CUE files."
 
   (setq-local comment-start "REM"
@@ -36,9 +36,9 @@
                                          ("File"  ,(rx bol "FILE" (one-or-more space) "\"" (group (one-or-more not-newline)) "\"" space "WAVE" eol) 1 ))))
 
 ;;;###autoload
-(add-to-list 'auto-mode-alist '("\\.cue\\'" . cue-mode))
+(add-to-list 'auto-mode-alist '("\\.cue\\'" . cue-sheet-mode))
 
 ;; add the mode to the `features' list
-(provide 'cue-mode)
+(provide 'cue-sheet-mode)
 
-;;; cue-mode.el ends here
+;;; cue-sheet-mode.el ends here
