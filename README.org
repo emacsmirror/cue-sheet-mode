@@ -1,5 +1,35 @@
-* cue-mode
+* cue-sheet-mode
 
-Support for .cue files in emacs.
+Very basic support for CUE sheet files in emacs.
 
-   =cue-mode=, ya' basic!
+It currently supports the following:
+
+1. syntax highlighting
+2. imenu for jumping to files and tracks
+3. helper for looking up ISRC codes
+
+** Installation
+
+It's not on melpa yet, so you will have to manually install it.
+
+For *Doom Emacs*:
+
+#+CAPTION: init.el
+#+begin_src emacs-lisp
+(package! cue-sheet-mode
+  :recipe (:host github :repo "peterhoeg/cue-sheet-mode"))
+#+end_src
+
+#+CAPTION: config.el
+#+begin_src emacs-lisp
+(use-package cue-sheet-mode :defer t
+  :config
+  (add-hook! cue-sheet-mode
+    (map! :map cue-sheet-mode-map
+          :localleader
+          :desc "look up ISRC" :nv "l" #'cue-sheet-mode-lookup-dwim)))
+#+end_src
+
+** Code contributions
+
+Yes please!
