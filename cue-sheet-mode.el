@@ -30,20 +30,37 @@
 
 (require 'rx)
 
+(defun cue-sheet-mode-lookup-dwim (&optional code)
+  "Look up an ISRC `CODE' online."
+  (interactive)
+  (let* ((isrc (or code (thing-at-point 'word)))
+         (url (format "https://isrcsearch.ifpi.org/#!/search?tab=lookup&isrcCode=%s" isrc)))
+    (if (string-match (rx bos
+                          (= 2 alpha) ; country
+                          (= 3 alnum) ; issuer
+                          (= 2 digit) ; year
+                          (= 5 digit) ; sequence
+                          eos) isrc)
+        (browse-url url)
+      (warn "Invalid ISRC: %s" isrc))))
+
 ;;;###autoload
 (define-derived-mode cue-sheet-mode conf-mode "CUESheet"
   "Major mode for editing CUE sheet files."
 
   (rx-define spaces (one-or-more space))
+  (rx-define types (or "AUDIO" "BINARY" "CDI/2336" "CDI/2352" "CDG" "MODE1/2048" "MODE1/2352" "MODE2/2336" "MODE2/2352" "MP3" "WAVE"))
 
   (setq-local comment-start "REM"
               comment-end ""
               font-lock-defaults
               `(((,(rx bol (or "REM")) . 'font-lock-comment-face)
+                 (,(rx (or "GENRE") spaces (group (one-or-more (any alnum "/" "-")))) . (1 'font-lock-constant-face))
+                 (,(rx (or "CATALOG" "DATE" "DISCID" "ISRC") spaces (group (one-or-more (any alnum "/")))) . (1 'font-lock-variable-name-face))
                  (,(rx (or "CATALOG" "CDTEXTFILE" "COMMENT" "COMPOSER" "DATE" "DISCID" "FILE" "FLAGS" "GENRE" "INDEX" "ISRC" "PERFORMER" "POSTGAP" "PREGAP" "SONGWRITER" "TITLE" "TRACK")) . 'font-lock-keyword-face)
-                 (,(rx (or "AUDIO" "BINARY" "CDI/2336" "CDI/2352" "CDG" "MODE1/2048" "MODE1/2352" "MODE2/2336" "MODE2/2352" "MP3" "WAVE")) . 'font-lock-type-face)))
-              imenu-generic-expression `(("Track" ,(rx bol (optional spaces) "TRACK" spaces (group (one-or-more digit)) spaces "AUDIO" eol) 1)
-                                         ("File"  ,(rx bol (optional spaces) "FILE" spaces "\"" (group (one-or-more not-newline)) "\"" spaces "WAVE" eol) 1 ))))
+                 (,(rx types) . 'font-lock-type-face)))
+              imenu-generic-expression `(("Track" ,(rx bol (optional spaces) "TRACK" spaces (group (one-or-more digit)) spaces types (optional spaces) eol) 1)
+                                         ("File"  ,(rx bol (optional spaces) "FILE" spaces "\"" (group (one-or-more not-newline)) "\"" spaces types (optional spaces) eol) 1 ))))
 
 ;;;###autoload
 (add-to-list 'auto-mode-alist `(,(rx ".cue" eos) . cue-sheet-mode))
