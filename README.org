@@ -1,3 +1,5 @@
+[[https://melpa.org/#/cue-sheet-mode][https://melpa.org/packages/cue-sheet-mode-badge.svg]]
+
 * cue-sheet-mode
 
 Very basic support for CUE sheet files in emacs.
