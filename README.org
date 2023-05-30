@@ -12,7 +12,7 @@ It currently supports the following:
 
 ** Installation
 
-It's not on melpa yet, so you will have to manually install it.
+It's on *melpa*!\\
 
 For *Doom Emacs*:
 
