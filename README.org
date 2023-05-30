@@ -12,14 +12,13 @@ It currently supports the following:
 
 ** Installation
 
-It's on *melpa*!\\
+You can either install directly from [[https://melpa.org/#/cue-sheet-mode][MELPA]] or do it manually.
 
 For *Doom Emacs*:
 
 #+CAPTION: init.el
 #+begin_src emacs-lisp
-(package! cue-sheet-mode
-  :recipe (:host github :repo "peterhoeg/cue-sheet-mode"))
+(package! cue-sheet-mode)
 #+end_src
 
 #+CAPTION: config.el
